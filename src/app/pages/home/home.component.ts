@@ -1,0 +1,47 @@
+import { Component , signal} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {Task} from './../../models/task.model';
+
+@Component({
+     selector: 'app-home',
+     standalone: true,
+     imports: [CommonModule],
+     templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
+})
+export class HomeComponent {
+  tasks = signal<Task[]>([
+    {
+    id:Date.now(),
+    title:'Crear Proyecto',
+    completed:false
+    },
+    {
+      id:Date.now(),
+      title:'Crear Componente',
+      completed:false
+      },
+  ]);
+//agregar un elemento de input y pasarlo al Array
+    changeHandler(event:Event){
+    const input = event.target as HTMLInputElement;
+    const newTask = input.value;
+    this.addTask(newTask);
+  }
+
+  addTask(title:string){
+  const newTask = {
+    id: Date.now(),
+    title,
+    completed:false,
+  };
+  this.tasks.update((tasks)=> [...tasks, newTask]);
+
+    }
+
+  //Eliminar un elemento de input y pasarlo al Array
+    deleteTask(index:number){
+    this.tasks.update((tasks)=> tasks.filter((task,position)=> position !== index));
+      }
+
+    }
